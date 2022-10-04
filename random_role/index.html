@@ -6,6 +6,7 @@
     <link href="./css/main.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 </head>
 <body class="align-items-center d-flex">
 <div class="container col-8 mt-4 pt-5 pb-5">
@@ -76,10 +77,108 @@
          * 参加者のエラーチェックを行い、ロール分配に処理を移行する。
          */
         function dealRole() {
-            const users = getInputValue()
-            const errorMessage = inputErrorCheck(users)
-            if (errorMessage) {
-                showErrorMessage(errorMessage)
+            const users = getInputValue();
+
+            // エラーチェック
+            deleteErrorMessage();
+            const errorMessage = inputErrorCheck(users);
+            if (errorMessage.length) {
+                showErrorMessage(errorMessage);
+                return;
+            }
+
+            // ロール分配を行う
+            let resultRole = {}
+            while (true) {
+                resultRole = getRandomRole(users);
+                // ランダムに分配する際に、OK/NGロールの噛み合いがうまくいかず失敗となった場合は再処理する
+                // TODO: アルゴリズムが汚すぎるので最適化したい
+                if (undefined in resultRole) {
+                    console.log("[WARNING] ロール分配に失敗したため再度実行します。")
+                    continue;
+                }
+                break;
+            }
+            console.log("Result Role: ", resultRole);
+
+            // ロール分配結果をクッキーに保存する(次ページで参照するため)
+            setObjCookie("role", resultRole);
+        }
+
+        /*
+         * objectをstringに変換してCookieに保存する
+         */
+        function setObjCookie(key, object) {
+            $.cookie(key, JSON.stringify(object))
+        }
+
+        /*
+         * Cookieにあるobject形式のstringをobjに変換して取得する
+         */
+        function getObjCookie(key) {
+            return JSON.parse($.cookie(key))
+        }
+
+
+        /*
+         * ロールをランダムに振り分ける
+         * Returns:
+         *   roles (obj)
+         *     e.g.) {"mt": "ine", "st": "pen"}
+         */
+        function getRandomRole(users) {
+            // TODO: ロール一覧は定数としてどこかで管理したい
+            let resultRole = {}
+            let undecideRole = new Set(["mt", "st", "h1", "h2", "d1", "d2", "d3", "d4"]);
+            for (var i = 0; i < users.length; i++) {
+                // TODO: DeepCopyしているがもっとスマートなやり方にしたい。DeepCopyしないとselectableRolesの値変更時にundecideRoleまで影響される。
+                let selectableRoles = new Set(Array.from(undecideRole))
+
+                // ロール未配分者のNGロール以外を除く
+                // TODO: 汚い。最適化したい。
+                // TODO: この処理もしかしたら不要？もっといいアルゴリズム考えたい。
+                // let undecideNgRoles = getNGRoleFromUndecideUsers(users, i)
+                // for (let ngRole of undecideNgRoles) {
+                //     console.log("UNDECIDE NG ROLES")
+                //     console.log(ngRole)
+                //     if (!selectableRoles.has(ngRole)) {
+                //         console.log(`他人のNGロール以外のため削除します ${ngRole}`)
+                //         selectableRoles.delete(ngRole);
+                //     }
+                // }
+
+                // 自分のNGロールを除く
+                // TODO: 汚い。最適化したい。
+                for (var j = 0; j < users[i].role.NG.length; j++) {
+                    selectableRoles.delete(users[i].role.NG[j])
+                }
+
+                // ランダムでロールを振り分ける
+                let randomRole = Array.from(selectableRoles)
+                randomRole = randomRole[Math.floor(Math.random() * randomRole.length)]
+                resultRole[randomRole] = users[i].name
+
+                // 振り分けたロールは未決定ロールリストから削除する
+                undecideRole.delete(randomRole);
+
+            }
+            return resultRole;
+
+            /*
+             * 自身を除くロール未分配者のNGロールを取得する
+             * Returns:
+             *   ngRoles (Set):
+             *     e.g.) ("mt", "st")
+             */
+            function getNGRoleFromUndecideUsers(users, thisTimeNo) {
+                let ngRoles = []
+                for (var i = 0; i < users.length; i++) {
+                    if (i < thisTimeNo) {
+                        continue;
+                    }
+                    ngRoles.push(...users[i].role.NG)
+                }
+                return new Set(ngRoles)
             }
         }
 
@@ -138,15 +237,17 @@
          * エラーメッセージを表示する。
          */
         function showErrorMessage(errorMessages) {
-            let errorMessageAreaDom = $("#error-message-area")
-            errorMessageAreaDom.empty()
             for (var i = 0; i < errorMessages.length; i++) {
-                errorMessageAreaDom.append(`
+                $("#error-message-area").append(`
                     <div class="alert alert-danger col-8" role="alert">
                         ${errorMessages[i]}
                     </div>
                 `);
             }
+        }
+
+        function deleteErrorMessage() {
+            $("#error-message-area").empty();
         }
 
         /*
@@ -157,10 +258,25 @@
             if (isEmptyUserName(users)) {
                 errorMessages.push("名前が入力されていません。")
             }
+            if (isOnlyNGRole(users)) {
+                errorMessages.push("全てのロールをNGにしているユーザーがいます。NGロールの調整をしてください。")
+            }
             if (!isAllOKRoleSet(users)) {
                 errorMessages.push("全ての人からNGになっているロールがあります。NGロールの調整をしてください。")
             }
             return errorMessages
+
+            /*
+             * 全てのロールをNGに設定しているユーザーがいる場合はtrueを返す
+             */
+            function isOnlyNGRole(users) {
+                for (var i = 0; i < users.length; i++) {
+                    if (users[i].role.NG.length === 8) {
+                        return true;
+                    }
+                }
+                return false;
+            }
 
             /*
              * 全ての参加者にNG設定されているロールがある場合はFalseを返す
@@ -179,7 +295,7 @@
              */
             function isEmptyUserName(users) {
                 for (var i = 0; i < users.length; i++) {
-                    if (users[0].name === undefined || users[0].name === "") {
+                    if (users[i].name === undefined || users[i].name === "") {
                         return true
                     }
                 }
