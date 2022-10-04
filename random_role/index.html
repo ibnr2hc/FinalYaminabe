@@ -78,6 +78,9 @@
          */
         function dealRole() {
             const users = getInputValue();
+
+            // エラーチェック
+            deleteErrorMessage();
             const errorMessage = inputErrorCheck(users);
             if (errorMessage.length) {
                 showErrorMessage(errorMessage);
@@ -234,10 +237,8 @@
          * エラーメッセージを表示する。
          */
         function showErrorMessage(errorMessages) {
-            let errorMessageAreaDom = $("#error-message-area")
-            errorMessageAreaDom.empty()
             for (var i = 0; i < errorMessages.length; i++) {
-                errorMessageAreaDom.append(`
+                $("#error-message-area").append(`
                     <div class="alert alert-danger col-8" role="alert">
                         ${errorMessages[i]}
                     </div>
@@ -245,6 +246,9 @@
             }
         }
 
+        function deleteErrorMessage() {
+            $("#error-message-area").empty();
+        }
         /*
          * 入力されたインプットに誤りがないか確認する。エラーがある場合はエラー文を返す。
          */
