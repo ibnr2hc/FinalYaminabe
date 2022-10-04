@@ -249,6 +249,7 @@
         function deleteErrorMessage() {
             $("#error-message-area").empty();
         }
+
         /*
          * 入力されたインプットに誤りがないか確認する。エラーがある場合はエラー文を返す。
          */
@@ -257,10 +258,25 @@
             if (isEmptyUserName(users)) {
                 errorMessages.push("名前が入力されていません。")
             }
+            if (isOnlyNGRole(users)) {
+                errorMessages.push("全てのロールをNGにしているユーザーがいます。NGロールの調整をしてください。")
+            }
             if (!isAllOKRoleSet(users)) {
                 errorMessages.push("全ての人からNGになっているロールがあります。NGロールの調整をしてください。")
             }
             return errorMessages
+
+            /*
+             * 全てのロールをNGに設定しているユーザーがいる場合はtrueを返す
+             */
+            function isOnlyNGRole(users) {
+                for (var i = 0; i < users.length; i++) {
+                    if (users[i].role.NG.length === 8) {
+                        return true;
+                    }
+                }
+                return false;
+            }
 
             /*
              * 全ての参加者にNG設定されているロールがある場合はFalseを返す
