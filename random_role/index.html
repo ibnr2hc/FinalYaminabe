@@ -137,24 +137,30 @@
         /*
          * エラーメッセージを表示する。
          */
-        function showErrorMessage(message) {
+        function showErrorMessage(errorMessages) {
             let errorMessageAreaDom = $("#error-message-area")
             errorMessageAreaDom.empty()
-            errorMessageAreaDom.append(`
-                <div class="alert alert-danger col-8" role="alert">
-                    ${message}
-                </div>
-            `);
+            for (var i = 0; i < errorMessages.length; i++) {
+                errorMessageAreaDom.append(`
+                    <div class="alert alert-danger col-8" role="alert">
+                        ${errorMessages[i]}
+                    </div>
+                `);
+            }
         }
 
         /*
          * 入力されたインプットに誤りがないか確認する。エラーがある場合はエラー文を返す。
          */
         function inputErrorCheck(users) {
-            if (!isAllOKRoleSet(users)) {
-                return "全ての人からNGになっているロールがあります。NGロールの調整をしてください。"
+            let errorMessages = []
+            if (isEmptyUserName(users)) {
+                errorMessages.push("名前が入力されていません。")
             }
-            return ""
+            if (!isAllOKRoleSet(users)) {
+                errorMessages.push("全ての人からNGになっているロールがあります。NGロールの調整をしてください。")
+            }
+            return errorMessages
 
             /*
              * 全ての参加者にNG設定されているロールがある場合はFalseを返す
@@ -166,6 +172,18 @@
                 }
                 const distinctOkRoles = new Set(okRoles);
                 return distinctOkRoles.size === 8;
+            }
+
+            /*
+             * 名前が入力されていない場合はTrueを返す
+             */
+            function isEmptyUserName(users) {
+                for (var i = 0; i < users.length; i++) {
+                    if (users[0].name === undefined || users[0].name === "") {
+                        return true
+                    }
+                }
+                return false
             }
         }
 
