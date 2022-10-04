@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu+Mono');
+
+
+body {
+    background-color: #F7F7F7;
+}
+
+.service-title {
+    font-family: 'Ubuntu Mono';
+    color: #4B4B4B;
+}
+
+.container {
+    background-color: #FEFEFE;
+}

@@ -1,0 +1,208 @@
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>闇鍋 - Entry</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="./css/main.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+</head>
+<body class="align-items-center d-flex">
+<div class="container col-8 mt-4 pt-5 pb-5">
+    <div class="row justify-content-md-center mb-4">
+        <div class="col-md-auto">
+            <h1 class="display-1 service-title">
+                YAMINABE ROLE
+            </h1>
+        </div>
+    </div>
+    <div class="row justify-content-center pt-4" id="error-message-area"></div>
+    <div class="row justify-content-center pt-4" id="main">
+        <form action="">
+            <div id="input-user-form-area">
+                <!-- User: 1 -->
+                <div class="row justify-content-center mb-3">
+                    <div class="col-8">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="user-1-name" placeholder="名前" required>
+
+                            <input type="checkbox" class="btn-check" id="user-1-role-mt" autocomplete="off" checked>
+                            <label class="btn btn-outline-primary" for="user-1-role-mt">MT</label>
+
+                            <input type="checkbox" class="btn-check" id="user-1-role-st" autocomplete="off" checked>
+                            <label class="btn btn-outline-primary" for="user-1-role-st">ST</label>
+
+                            <!-- TODO: btn-outline-successではなく、専用の配色を持たせたクラスを用意したい -->
+                            <input type="checkbox" class="btn-check" id="user-1-role-h1" autocomplete="off" checked>
+                            <label class="btn btn-outline-success" for="user-1-role-h1">H1</label>
+
+                            <input type="checkbox" class="btn-check" id="user-1-role-h2" autocomplete="off" checked>
+                            <label class="btn btn-outline-success" for="user-1-role-h2">H2</label>
+
+                            <!-- TODO: btn-outline-dangerではなく、専用の配色を持たせたクラスを用意したい -->
+                            <input type="checkbox" class="btn-check" id="user-1-role-d1" autocomplete="off" checked>
+                            <label class="btn btn-outline-danger" for="user-1-role-d1">D1</label>
+
+                            <input type="checkbox" class="btn-check" id="user-1-role-d2" autocomplete="off" checked>
+                            <label class="btn btn-outline-danger" for="user-1-role-d2">D2</label>
+
+                            <input type="checkbox" class="btn-check" id="user-1-role-d3" autocomplete="off" checked>
+                            <label class="btn btn-outline-danger" for="user-1-role-d3">D3</label>
+
+                            <input type="checkbox" class="btn-check" id="user-1-role-d4" autocomplete="off" checked>
+                            <label class="btn btn-outline-danger" for="user-1-role-d4">D4</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center" id="add-user-input-form-area">
+                <div class="col-8 d-grid mb-3">
+                    <button type="button" onclick="addUserInputForm()" class="btn btn-outline-success">＋</button>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-8 d-grid mt-3">
+                    <button type="button" onclick="dealRole()" class="btn btn-primary">開始</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+        let userInputFormNumber = 1;
+
+        /*
+         * 参加者のエラーチェックを行い、ロール分配に処理を移行する。
+         */
+        function dealRole() {
+            const users = getInputValue()
+            const errorMessage = inputErrorCheck(users)
+            if (errorMessage) {
+                showErrorMessage(errorMessage)
+            }
+        }
+
+        /*
+         * 参加者の入力フォームを追加する。8行に達した場合には追加ボタンを非表示にする。
+         */
+        function addUserInputForm() {
+            userInputFormNumber++;
+            addUserInputFormHtml(userInputFormNumber);
+
+            // 8行(フルパ)の場合は追加ボタンを非表示にする。
+            if (userInputFormNumber === 8) {
+                $("#add-user-input-form-area").hide();
+            }
+        }
+
+        /*
+         * 参加者に設定された名前やロールを取得する
+         */
+        function getInputValue() {
+            let users = [];
+            for (var i = 1; i < 9; i++) {
+                // 存在しない=以降の参加者は設定されていないものと判定する
+                let name = $(`#user-${i}-name`).val()
+                if (name === undefined) {break}
+
+                let roles = getInputRoll(i)
+                users.push({
+                    "name": name,
+                    "role": roles
+                })
+            }
+            return users
+        }
+
+        /*
+         * 参加者に設定されたロールを取得する
+         */
+        function getInputRoll(userNo) {
+            const roles = ["mt", "st", "h1", "h2", "d1", "d2", "d3", "d4"];
+            let userRole = {"OK": [], "NG": []};
+
+            for (var i = 0; i < roles.length; i++) {
+                let role = roles[i];
+                let isCheck = $(`#user-${userNo}-role-${role}`).prop("checked");
+                if (isCheck) {
+                    userRole.OK.push(role);
+                } else {
+                    userRole.NG.push(role);
+                }
+            }
+            return userRole
+        }
+
+        /*
+         * エラーメッセージを表示する。
+         */
+        function showErrorMessage(message) {
+            let errorMessageAreaDom = $("#error-message-area")
+            errorMessageAreaDom.empty()
+            errorMessageAreaDom.append(`
+                <div class="alert alert-danger col-8" role="alert">
+                    ${message}
+                </div>
+            `);
+        }
+
+        /*
+         * 入力されたインプットに誤りがないか確認する。エラーがある場合はエラー文を返す。
+         */
+        function inputErrorCheck(users) {
+            if (!isAllOKRoleSet(users)) {
+                return "全ての人からNGになっているロールがあります。NGロールの調整をしてください。"
+            }
+            return ""
+
+            /*
+             * 全ての参加者にNG設定されているロールがある場合はFalseを返す
+             */
+            function isAllOKRoleSet(users) {
+                let okRoles = [];
+                for (var i = 0; i < users.length; i++) {
+                    okRoles = okRoles.concat(users[i].role.OK)
+                }
+                const distinctOkRoles = new Set(okRoles);
+                return distinctOkRoles.size === 8;
+            }
+        }
+
+        /*
+         * 参加者の入力フォームHTMLを追加する。
+         */
+        function addUserInputFormHtml(userNo) {
+            $("#input-user-form-area").append(`
+            <!-- User: ${userNo} -->
+            <div class="row justify-content-center mb-3">
+                <div class="col-8">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="user-${userNo}-name" placeholder="名前" required>
+                        <input type="checkbox" class="btn-check" id="user-${userNo}-role-mt" autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="user-${userNo}-role-mt">MT</label>
+                        <input type="checkbox" class="btn-check" id="user-${userNo}-role-st" autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="user-${userNo}-role-st">ST</label>
+                        <!-- TODO: btn-outline-successではなく、専用の配色を持たせたクラスを用意したい -->
+                        <input type="checkbox" class="btn-check" id="user-${userNo}-role-h1" autocomplete="off" checked>
+                        <label class="btn btn-outline-success" for="user-${userNo}-role-h1">H1</label>
+                        <input type="checkbox" class="btn-check" id="user-${userNo}-role-h2" autocomplete="off" checked>
+                        <label class="btn btn-outline-success" for="user-${userNo}-role-h2">H2</label>
+                        <!-- TODO: btn-outline-dangerではなく、専用の配色を持たせたクラスを用意したい -->
+                        <input type="checkbox" class="btn-check" id="user-${userNo}-role-d1" autocomplete="off" checked>
+                        <label class="btn btn-outline-danger" for="user-${userNo}-role-d1">D1</label>
+                        <input type="checkbox" class="btn-check" id="user-${userNo}-role-d2" autocomplete="off" checked>
+                        <label class="btn btn-outline-danger" for="user-${userNo}-role-d2">D2</label>
+                        <input type="checkbox" class="btn-check" id="user-${userNo}-role-d3" autocomplete="off" checked>
+                        <label class="btn btn-outline-danger" for="user-${userNo}-role-d3">D3</label>
+                        <input type="checkbox" class="btn-check" id="user-${userNo}-role-d4" autocomplete="off" checked>
+                        <label class="btn btn-outline-danger" for="user-${userNo}-role-d4">D4</label>
+                    </div>
+                </div>
+            </div>
+            `);
+        }
+    </script>
+</div>
+</body>
+</html>
