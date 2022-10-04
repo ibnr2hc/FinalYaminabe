@@ -6,6 +6,7 @@
     <link href="./css/main.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 </head>
 <body class="align-items-center d-flex">
 <div class="container col-8 mt-4 pt-5 pb-5">
@@ -95,7 +96,26 @@
                 }
                 break;
             }
+            console.log("Result Role: ", resultRole);
+
+            // ロール分配結果をクッキーに保存する(次ページで参照するため)
+            setObjCookie("role", resultRole);
         }
+
+        /*
+         * objectをstringに変換してCookieに保存する
+         */
+        function setObjCookie(key, object) {
+            $.cookie(key, JSON.stringify(object))
+        }
+
+        /*
+         * Cookieにあるobject形式のstringをobjに変換して取得する
+         */
+        function getObjCookie(key) {
+            return JSON.parse($.cookie(key))
+        }
+
 
         /*
          * ロールをランダムに振り分ける
