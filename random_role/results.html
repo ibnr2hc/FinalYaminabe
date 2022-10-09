@@ -1,0 +1,113 @@
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>闇鍋 - Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="./css/main.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+</head>
+<body class="align-items-center d-flex">
+<div class="container col-8 mt-4 pt-5 pb-5">
+    <div class="row justify-content-md-center mb-4">
+        <div class="col-md-auto">
+            <h1 class="display-1 service-title">
+                YAMINABE ROLE
+            </h1>
+        </div>
+    </div>
+    <div class="row justify-content-center pt-4 col-9 mx-auto" id="main">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ロール</th>
+                    <th scope="col">ポジション</th>
+                    <th scope="col">名前</th>
+                </tr>
+            </thead>
+            <tbody id="resultTable">
+            </tbody>
+        </table>
+    </div>
+    <script>
+        showResults()
+
+        /*
+         * ページに結果を表示する
+         */
+        function showResults() {
+            const role = getObjCookie("role");
+            $("#resultTable").append(`
+                <tr>
+                  <th>タンク</th>
+                  <th scope="row">MT</th>
+                  <th>${getUserNameFromRole(role, "mt")}</th>
+                </tr>
+                <tr>
+                  <th>タンク</th>
+                  <th>ST</th>
+                  <th>${getUserNameFromRole(role, "st")}</th>
+                </tr>
+                <tr>
+                  <th>ヒーラー</th>
+                  <th>H1</th>
+                  <th>${getUserNameFromRole(role, "h1")}</th>
+                </tr>
+                <tr>
+                  <th>ヒーラー</th>
+                  <th>H2</th>
+                  <th>${getUserNameFromRole(role, "h2")}</th>
+                </tr>
+                <tr>
+                  <th>メレー</th>
+                  <th>D1</th>
+                  <th>${getUserNameFromRole(role, "d1")}</th>
+                </tr>
+                <tr>
+                  <th>メレー</th>
+                  <th>D2</th>
+                  <th>${getUserNameFromRole(role, "d2")}</th>
+                </tr>
+                <tr>
+                  <th>レンジ</th>
+                  <th>D3</th>
+                  <th>${getUserNameFromRole(role, "d3")}</th>
+                </tr>
+                <tr>
+                  <th>キャス</th>
+                  <th>D4</th>
+                  <th>${getUserNameFromRole(role, "d4")}</th>
+                </tr>
+            `)
+        }
+
+        /*
+         * ロール毎の名前を取得する。未分配のロールの場合は "-" を返す。
+         * Input:
+         *     roleObj (Obj):
+         *         e.g.) {"mt": "ine", "st": "pen"}
+         *     roleName (String):
+         *         e.g.) mt
+         * Output:
+         *     userName (String)
+         */
+        function getUserNameFromRole(rolesObj, roleName) {
+            if (rolesObj[roleName]) {
+                return rolesObj[roleName]
+            } else{
+                return "-"
+            }
+        }
+
+
+        /*
+         * Cookieにあるobject形式のstringをobjに変換して取得する
+         */
+        function getObjCookie(key) {
+            return JSON.parse($.cookie(key))
+        }
+    </script>
+</div>
+</body>
+</html>
