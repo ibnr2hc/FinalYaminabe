@@ -173,14 +173,30 @@
          */
         function getResult(offset) {
             const roleAndUserName = getObjCookie("role");
-            const dealedRoles = getDealedRoles();
+            const dealedRoles = sortRoles(getDealedRoles());
 
             const roleName = dealedRoles[offset]
             return {
                 "role": roleName?.toUpperCase(),
                 "user_name": roleAndUserName[roleName]
             }
+
+            /*
+             * ロールのリストをMT, ST, Hn, Dnの順番にソートする
+             */
+            function sortRoles(dealedRoles) {
+                // TODO: いろんなところに定義されていて気持悪い。configに書き出す。
+                const roles = ["mt", "st", "h1", "h2", "d1", "d2", "d3", "d4"];
+                let sortedDealRoles = [];
+                for (let i = 0; i < roles.length; i++) {
+                    if (dealedRoles.indexOf(roles[i])) {
+                        sortedDealRoles.push(roles[i]);
+                    }
+                }
+                return sortedDealRoles;
+            }
         }
+
 
         /*
          * 分配済みのロール名を取得する
