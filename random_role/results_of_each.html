@@ -20,11 +20,11 @@
     <div class="row justify-content-center pt-4 col-9 mx-auto text-center display-6" id="results-of-each-role">
         <div class="col" id="role-guidance-text"></div>
     </div>
-    <div class="row justify-content-center pt-2 col-9 mx-auto text-center display-6" id="results-of-each-user-name">
-        <div class="col" id="user-name-guidance-text"></div>
-    </div>
-    <div class="row justify-content-center pt-2 col-9 mx-auto text-center" id="results-of-each-job-icons">
+    <div class="row justify-content-center col-9 mx-auto text-center" id="results-of-each-job-icons">
         <div class="col" id="job-guidance-img"></div>
+    </div>
+    <div class="row justify-content-center pt-4 col-9 mx-auto text-center display-6" id="results-of-each-user-name">
+        <div class="col" id="user-name-guidance-text"></div>
     </div>
     <div class="row justify-content-center pt-4 col-9 mx-auto text-center" id="results-of-each-next-page">
         <div class="col mt-5" id="next-results-button"></div>
@@ -44,7 +44,7 @@
             // "${userName}さん" の表示
             showUserNameGuidanceText(result['user_name'], 4000)
             // ジョブアイコン の表示
-            showJobIcons(result['role'], 4000)
+            showJobIcons(result['role'], 0)
             // 次のページへのボタン表示
             showNextPageButton(4000)
         }
@@ -140,7 +140,7 @@
             setTimeout(() => {
                 const job_icon_paths = ICON_PATHS[role.toLowerCase()];
                 for (let i = 0; i < job_icon_paths.length; i++) {
-                    $("#job-guidance-img").append(`<img src="${job_icon_paths[i]}" />`);
+                    $("#job-guidance-img").append(`<img src="${job_icon_paths[i]}" class="job-icon" />`);
                 }
             }, intervalMSec);
         }
