@@ -27,7 +27,9 @@
         <div class="col" id="user-name-guidance-text"></div>
     </div>
     <div class="row justify-content-center pt-4 col-9 mx-auto text-center" id="results-of-each-next-page">
-        <div class="col mt-5" id="next-results-button"></div>
+        <div class="col mt-5" id="next-results-button">
+            <button type="button" onclick="location.href='./index.html'" class="btn btn-secondary">ロール調整へ</button>
+        </div>
     </div>
     <script>
         showResultsOfEach()
@@ -46,7 +48,7 @@
             // ジョブアイコン の表示
             showJobIcons(result['role'], 0)
             // 次のページへのボタン表示
-            showNextPageButton(4000)
+            showNextPageButton(0)
         }
 
         /*
@@ -55,6 +57,7 @@
          * まだ表示していない個々のロール分配がない場合は、「結果へ」のボタンと共に画面遷移リンクを表示する。
          */
         function showNextPageButton(intervalMSec) {
+            // TODO: index.htmlと同じようにonclick()をトリガーとして関数をコールし、その関数内でlocation.href先を調整していいかも。
             setTimeout(() => {
                 if (existsNextResultsOfEach()) {
                     let nextOffset = getQueryString("offset") ? Number(getQueryString("offset")) : 0;
