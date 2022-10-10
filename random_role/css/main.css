@@ -13,3 +13,8 @@ body {
 .container {
     background-color: #FEFEFE;
 }
+
+#results-of-each-job-icons img {
+    width: 7%;
+    height: auto;
+}
