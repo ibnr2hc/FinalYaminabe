@@ -189,7 +189,7 @@
                 const roles = ["mt", "st", "h1", "h2", "d1", "d2", "d3", "d4"];
                 let sortedDealRoles = [];
                 for (let i = 0; i < roles.length; i++) {
-                    if (dealedRoles.indexOf(roles[i])) {
+                    if (dealedRoles.includes(roles[i])) {
                         sortedDealRoles.push(roles[i]);
                     }
                 }
