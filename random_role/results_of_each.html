@@ -1,0 +1,249 @@
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>闇鍋 - Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="./css/main.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+</head>
+<body class="align-items-center d-flex">
+<div class="container col-8 mt-4 pt-5 pb-5">
+    <div class="row justify-content-md-center mb-4">
+        <div class="col-md-auto">
+            <h1 class="display-1 service-title">
+                YAMINABE ROLE
+            </h1>
+        </div>
+    </div>
+    <div class="row justify-content-center pt-4 col-9 mx-auto text-center display-6" id="results-of-each-role">
+        <div class="col" id="role-guidance-text"></div>
+    </div>
+    <div class="row justify-content-center pt-2 col-9 mx-auto text-center display-6" id="results-of-each-user-name">
+        <div class="col" id="user-name-guidance-text"></div>
+    </div>
+    <div class="row justify-content-center pt-2 col-9 mx-auto text-center" id="results-of-each-job-icons">
+        <div class="col" id="job-guidance-img"></div>
+    </div>
+    <div class="row justify-content-center pt-4 col-9 mx-auto text-center" id="results-of-each-next-page">
+        <div class="col mt-5" id="next-results-button"></div>
+    </div>
+    <script>
+        showResultsOfEach()
+
+        /*
+         * 分配されたロール毎にユーザー名などの詳細な情報を画面に表示する
+         */
+        async function showResultsOfEach() {
+            let offset = getQueryString("offset") ? Number(getQueryString("offset")) : 0;
+            const result = getResult(offset);
+
+            // "${role}は..." の表示
+            showRoleGuidanceText(result['role'], 1000);
+            // "${userName}さん" の表示
+            showUserNameGuidanceText(result['user_name'], 4000)
+            // ジョブアイコン の表示
+            showJobIcons(result['role'], 4000)
+            // 次のページへのボタン表示
+            showNextPageButton(4000)
+        }
+
+        /*
+         * 次のページへのボタンを表示する。
+         * まだ表示していない個々のロール分配がある場合は、「次へ」のボタンと共に画面遷移リンクを表示する。
+         * まだ表示していない個々のロール分配がない場合は、「結果へ」のボタンと共に画面遷移リンクを表示する。
+         */
+        function showNextPageButton(intervalMSec) {
+            setTimeout(() => {
+                if (existsNextResultsOfEach()) {
+                    let nextOffset = getQueryString("offset") ? Number(getQueryString("offset")) : 0;
+                    ++nextOffset;
+                    $("#next-results-button").append(`<button type="button" onclick="location.href='./results_of_each.html?offset=${nextOffset}'" class="btn btn-primary">次へ</button>`);
+                } else {
+                    $("#next-results-button").append(`<button type="button" onclick="location.href='./results.html'" class="btn btn-primary">結果へ</button>`);
+                }
+            }, intervalMSec);
+        }
+
+        /*
+         * まだ表示していない個々のロール分配結果があるか確認する。
+         *
+         * Returns:
+         *   existsNextResultsOfEach (bool): まだ表示していない個々のロール分配結果がある場合はtrueを返す
+         */
+        function existsNextResultsOfEach() {
+            let offset = getQueryString("offset") ? Number(getQueryString("offset")) : 0;
+            const result = getResult(offset + 1);
+
+            return result?.user_name ? true : false;
+        }
+
+
+        /*
+         * ${user_name}さん のテキストを表示する
+         */
+        function showUserNameGuidanceText(userName, intervalMSec) {
+            setTimeout(() => {
+                $("#user-name-guidance-text").append(`${userName} さん`);
+            }, intervalMSec);
+        }
+
+        /*
+         * ${user_name}さん のテキストを表示する
+         */
+        function showJobIcons(role, intervalMSec) {
+            // TODO: 定義の仕方がマジで汚い。リファクタリングしたい。
+            const ICON_PATHS = {
+                "mt": [
+                    "./img/icons/jobs/DarkKnight.png",
+                    "./img/icons/jobs/Warrior.png",
+                ],
+                "st": [
+                    "./img/icons/jobs/Paladin.png",
+                    "./img/icons/jobs/Gunbreaker.png",
+                ],
+                "h1": [
+                    "./img/icons/jobs/Astrologian.png",
+                    "./img/icons/jobs/WhiteMage.png",
+                ],
+                "h2": [
+                    "./img/icons/jobs/Sage.png",
+                    "./img/icons/jobs/Scholar.png",
+                ],
+                "d1": [
+                    "./img/icons/jobs/Dragoon.png",
+                    "./img/icons/jobs/Monk.png",
+                    "./img/icons/jobs/Ninja.png",
+                    "./img/icons/jobs/Reaper.png",
+                    "./img/icons/jobs/Samurai.png",
+                ],
+                "d2": [
+                    "./img/icons/jobs/Dragoon.png",
+                    "./img/icons/jobs/Monk.png",
+                    "./img/icons/jobs/Ninja.png",
+                    "./img/icons/jobs/Reaper.png",
+                    "./img/icons/jobs/Samurai.png",
+                ],
+                "d3": [
+                    "./img/icons/jobs/Bard.png",
+                    "./img/icons/jobs/Dancer.png",
+                    "./img/icons/jobs/Machinist.png",
+                ],
+                "d4": [
+                    "./img/icons/jobs/BlackMage.png",
+                    "./img/icons/jobs/RedMage.png",
+                    "./img/icons/jobs/Summoner.png",
+                ]
+            }
+
+            setTimeout(() => {
+                const job_icon_paths = ICON_PATHS[role.toLowerCase()];
+                for (let i = 0; i < job_icon_paths.length; i++) {
+                    $("#job-guidance-img").append(`<img src="${job_icon_paths[i]}" />`);
+                }
+            }, intervalMSec);
+        }
+
+        /*
+         * ${role}は... のテキストを表示する
+         */
+        function showRoleGuidanceText(roleName, interavlMSec) {
+            $("#role-guidance-text").append(`${roleName} は`);
+            setTimeout(() => {
+                $("#role-guidance-text").append(`.`);
+            }, interavlMSec);
+            setTimeout(() => {
+                $("#role-guidance-text").append(`.`);
+            }, interavlMSec + 1000);
+            setTimeout(() => {
+                $("#role-guidance-text").append(`.`);
+            }, interavlMSec + 2000);
+        }
+
+        /*
+         * 分配済みのロールとそれに対応する参加者名を取得する
+         *
+         * Input:
+         *   offset (int): 取得する結果のオフセット
+         *
+         * Returns:
+         *   result (Obj):
+         *     e.g.) {"role": "MT", "user_name": "ine"}
+         */
+        function getResult(offset) {
+            const roleAndUserName = getObjCookie("role");
+            const dealedRoles = sortRoles(getDealedRoles());
+
+            const roleName = dealedRoles[offset]
+            return {
+                "role": roleName?.toUpperCase(),
+                "user_name": roleAndUserName[roleName]
+            }
+
+            /*
+             * ロールのリストをMT, ST, Hn, Dnの順番にソートする
+             */
+            function sortRoles(dealedRoles) {
+                // TODO: いろんなところに定義されていて気持悪い。configに書き出す。
+                const roles = ["mt", "st", "h1", "h2", "d1", "d2", "d3", "d4"];
+                let sortedDealRoles = [];
+                for (let i = 0; i < roles.length; i++) {
+                    if (dealedRoles.includes(roles[i])) {
+                        sortedDealRoles.push(roles[i]);
+                    }
+                }
+                return sortedDealRoles;
+            }
+        }
+
+
+        /*
+         * 分配済みのロール名を取得する
+         *
+         * Retunrs:
+         *   delaedRoles (List):
+         *     e.g.) ["mt", "st"]
+         *
+         */
+        function getDealedRoles() {
+            const roleAndUserName = getObjCookie("role");
+            let dealedRoles = [];
+            let roleNames = Object.keys(roleAndUserName)
+            for (let i = 0; i < roleNames.length; i++) {
+                if (roleAndUserName[roleNames[i]]) {
+                    dealedRoles.push(roleNames[i]);
+                }
+            }
+            return dealedRoles;
+        }
+
+        /**
+         * クエリストリングを取得する
+         *
+         * Input:
+         *   name (string): 取得したいパラメーターのキー文字列
+         * Returns:
+         *   value (string): パラメーターに対応する値
+         */
+        function getQueryString(name) {
+            const url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        /*
+         * Cookieにあるobject形式のstringをobjに変換して取得する
+         */
+        // TODO: 色々なページに定義してあって気持悪い。まとめる。
+        function getObjCookie(key) {
+            return JSON.parse($.cookie(key))
+        }
+    </script>
+</div>
+</body>
+</html>
