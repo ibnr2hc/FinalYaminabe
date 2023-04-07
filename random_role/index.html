@@ -31,7 +31,7 @@
                 <div class="row justify-content-center mb-3">
                     <div class="col-8">
                         <div class="input-group">
-                            <input type="text" class="form-control" id="user-1-name" placeholder="名前" required>
+                            <input type="text" class="form-control" id="user-1-name" placeholder="名前" tabindex="1" required>
 
                             <input type="checkbox" class="btn-check" id="user-1-role-mt" autocomplete="off" checked>
                             <label class="btn btn-outline-primary" for="user-1-role-mt">MT</label>
@@ -328,7 +328,7 @@
             <div class="row justify-content-center mb-3">
                 <div class="col-8">
                     <div class="input-group">
-                        <input type="text" class="form-control" id="user-${userNo}-name" placeholder="名前" required>
+                    <input type="text" class="form-control" id="user-${userNo}-name" placeholder="名前" tabindex="${userNo}" required>
                         <input type="checkbox" class="btn-check" id="user-${userNo}-role-mt" autocomplete="off" checked>
                         <label class="btn btn-outline-primary" for="user-${userNo}-role-mt">MT</label>
                         <input type="checkbox" class="btn-check" id="user-${userNo}-role-st" autocomplete="off" checked>
