@@ -23,6 +23,6 @@ Suitable for romping with friends!
 
 ### for Dev
 ```bash
-npm devServer
+make devServer
 ```
 
