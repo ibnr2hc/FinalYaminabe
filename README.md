@@ -25,4 +25,3 @@ Suitable for romping with friends!
 ```bash
 make devServer
 ```
-
