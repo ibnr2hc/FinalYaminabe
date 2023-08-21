@@ -3,14 +3,17 @@
 import { DecidedUserAndRoleType, RoleType, UserType, useStore } from "@/store/store"
 import { ButtonCssForRole } from "@/utils/role/color"
 import { ToastError } from "@/utils/toast"
+import { Switch } from '@headlessui/react'
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { UserInput } from "./user_input"
 
 
 export default function RandomRoleSavageRaidForm() {
     const { users, addUser, setDecidedUserAndRoles } = useStore()
     const router = useRouter()
+
+    const [performanceSkip, setPerformanceSkip] = useState(false)
 
     const MAX_USER = 8; // 最大人数
     const MAX_RETRY_RANDOM_ROLE = 1000;  // ランダムロールの最大試行回数
@@ -89,6 +92,10 @@ export default function RandomRoleSavageRaidForm() {
         throw Error("ユーザーとロール(重複なし)の数が一致しません")
     }
 
+    function classNames(...classes: any[]) {
+        return classes.filter(Boolean).join(' ')
+    }
+
     const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
@@ -97,7 +104,11 @@ export default function RandomRoleSavageRaidForm() {
         setDecidedUserAndRoles(userAndRoles)
 
         // ページを移動する
-        router.push("/result")
+        if (performanceSkip) {
+            router.push("/result/list")  // 演出をスキップして結果一覧表示画面へ
+        } else {
+            router.push("/result")  // 演出ありで結果表示画面へ
+        }
     }
 
     useEffect(() => {
@@ -117,16 +128,49 @@ export default function RandomRoleSavageRaidForm() {
                     </>
                 ))}
             </div>
+
+            {/* ユーザー追加ボタン */}
             <button
                 type="button"
                 className={users.length >= MAX_USER ? "w-full border border-gray-400 mt-4 rounded p-1 text-lg font-bold text-gray-400" : "w-full border border-green-600 mt-4 rounded p-1 text-lg font-bold text-green-600 hover:bg-green-600 hover:text-white"}
                 disabled={users.length >= MAX_USER}
                 onClick={() => addUserInput()}
             >+</button>
+
+            {/* RandomRole実行ボタン */}
             <button
                 type="submit"
-                className="w-full border border-blue-600 mt-8 rounded p-1 text-lg  text-blue-600 hover:bg-blue-600 hover:text-white"
-            >Random Role!!</button>
+                className="w-full border border-blue-600 mt-10 rounded p-1 text-lg  text-blue-600 hover:bg-blue-600 hover:text-white"
+            >
+                Random Role!!
+            </button>
+
+            {/* 演出スキップボタン */}
+            <div className="w-full flex flex-row-reverse mt-2">
+                <div>
+                <Switch.Group as="div" className="flex items-center">
+                    <Switch
+                        checked={performanceSkip}
+                        onChange={setPerformanceSkip}
+                        className={classNames(
+                        performanceSkip ? 'bg-indigo-600' : 'bg-gray-200',
+                        'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2'
+                        )}
+                    >
+                        <span
+                        aria-hidden="true"
+                        className={classNames(
+                            performanceSkip ? 'translate-x-5' : 'translate-x-0',
+                            'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+                        )}
+                        />
+                    </Switch>
+                    <Switch.Label as="span" className="ml-3 text-sm">
+                        <span className="text-gray-500">演出スキップ</span>
+                    </Switch.Label>
+                </Switch.Group>
+                </div>
+            </div>
         </form>
         </>
     )
