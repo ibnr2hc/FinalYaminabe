@@ -1,19 +1,20 @@
 'use client'
 
 import { useStore } from "@/store/store"
+import { cloneDeep } from "lodash"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 
 export default function ResultPage() {
     const router = useRouter()
+    const { decidedUserAndRoles } = useStore()
+
+    const [userAndRoles, _] = useState(cloneDeep(decidedUserAndRoles))  // ユーザーとロールの結果。表示したユーザーとロールは削除する。その際にStore側に影響がないようにDeepCopyする。
     const [resultMessage, setResultMessage] = useState("")  // ユーザーとロールの結果を表示するメッセージ
     const [resultRoleImgSrc, setResultRoleImgSrc] = useState("")  // ロールの画像のパス
     const [finishedPeformance, setFinishedPerformance] = useState(false)  // 結果表示パフォーマンスが終わったかどうか
     const [endShowResult, setEndShowResult] = useState(false)  // ユーザーとロールを全て表示し終わったかどうか
-
-    const { decidedUserAndRoles } = useStore()
-    const userAndRoles = decidedUserAndRoles
 
     const getRandomUserAndRole = () => {
         /* userAndRolesからランダムで1人選ぶ */
@@ -63,12 +64,14 @@ export default function ResultPage() {
             return;
         }
 
+        // 1人目のユーザーとロールを表示する
         showRandomUserAndRole()
     }, [])
 
     return (
         <div className="w-full flex justfiy-center items-center flex-col">
             <div className="text-3xl text-slate-700">{resultMessage}</div>
+            {/* TODO: 画像を表示するようにする */}
             {/* {resultRoleImgSrc && (
                 <>
                     <img src={resultRoleImgSrc} />
