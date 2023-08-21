@@ -2,7 +2,6 @@
 
 import { UserType, useStore } from "@/store/store"
 import { ButtonCssForRole } from "@/utils/role/color"
-import { ToastError } from "@/utils/toast"
 import { useEffect } from "react"
 import { UserInput } from "./user_input"
 
@@ -10,12 +9,10 @@ import { UserInput } from "./user_input"
 export default function RandomRoleSavageRaidForm() {
     const { users, addUser, toggleRoleSelected } = useStore()
 
-    const addUserInput = () => {
-        if (users.length >= 8) {
-            ToastError("最大8人までです")
-            return;
-        }
+    const MAX_USER = 8; // 最大人数
 
+    const addUserInput = () => {
+        /* ユーザー入力欄を追加する */
         addUser({
             id: users.length + 1,
             name: "",
@@ -37,6 +34,7 @@ export default function RandomRoleSavageRaidForm() {
     }
 
     useEffect(() => {
+        // 初期化: 1人分の入力欄を作成
         addUserInput()
     }, [])
 
@@ -52,7 +50,8 @@ export default function RandomRoleSavageRaidForm() {
             </div>
             <button
                 type="button"
-                className="w-full border border-green-600 mt-4 rounded p-1 text-lg font-bold text-green-600 hover:bg-green-600 hover:text-white"
+                className={users.length >= MAX_USER ? "w-full border border-gray-400 mt-4 rounded p-1 text-lg font-bold text-gray-400" : "w-full border border-green-600 mt-4 rounded p-1 text-lg font-bold text-green-600 hover:bg-green-600 hover:text-white"}
+                disabled={users.length >= MAX_USER}
                 onClick={() => addUserInput()}
             >+</button>
             <button
