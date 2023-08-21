@@ -1,20 +1,15 @@
 import create from 'zustand';
 
-type RoleType = {
-    mt: boolean;
-    st: boolean;
-    h1: boolean;
-    h2: boolean;
-    d1: boolean;
-    d2: boolean;
-    d3: boolean;
-    d4: boolean;
+export type RoleType = {
+    name: string;
+    buttonCss: string;
+    selected: boolean;
 }
 
 export type UserType = {
     id: number;
     name: string;
-    role: RoleType;
+    roles: RoleType[];
 };
 
 type State = {

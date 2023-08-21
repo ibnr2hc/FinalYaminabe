@@ -15,7 +15,20 @@ export default function RandomRoleSavageRaidForm() {
             ToastError("最大8人までです")
             return;
         }
-        addUser({id: 1, name: "", role: {mt: false, st: false, h1: false, h2: false, d1: false, d2: false, d3: false, d4: false}})
+        addUser({
+            id: 1,
+            name: "",
+            roles: [
+                {name: "MT", selected: true, buttonCss: "bg-blue-600 text-white p-1 px-2 text-lg"},
+                {name: "ST", selected: true, buttonCss: "bg-blue-600 text-white p-1 px-2 text-lg"},
+                {name: "H1", selected: true, buttonCss: "bg-green-600 text-white p-1 px-2 text-lg"},
+                {name: "H2", selected: true, buttonCss: "bg-green-600 text-white p-1 px-2 text-lg"},
+                {name: "D1", selected: true, buttonCss: "bg-red-600 text-white p-1 px-2 text-lg"},
+                {name: "D2", selected: true, buttonCss: "bg-red-600 text-white p-1 px-2 text-lg"},
+                {name: "D3", selected: true, buttonCss: "bg-red-600 text-white p-1 px-2 text-lg"},
+                {name: "D4", selected: true, buttonCss: "bg-red-600 text-white p-1 px-2 text-lg"},
+            ],
+        })
     }
 
     const randomRole = () => {
@@ -32,7 +45,7 @@ export default function RandomRoleSavageRaidForm() {
             <div className="grid grid-cols-1 gap-4">
                 {users.map((user: UserType) => (
                     <>
-                    <UserInput key={user.id} id={user.id} />
+                    <UserInput key={user.id} id={user.id} roles={user.roles} />
                     </>
                 ))}
             </div>
