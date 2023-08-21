@@ -44,7 +44,7 @@ export default function RandomRoleSavageRaidForm() {
             <div className="grid grid-cols-1 gap-4">
                 {users.map((user: UserType) => (
                     <>
-                    <UserInput key={user.id} id={user.id} roles={user.roles} />
+                    <UserInput key={user.id} id={user.id} roles={user.roles} name={user.name} />
                     </>
                 ))}
             </div>

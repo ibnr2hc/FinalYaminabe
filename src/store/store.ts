@@ -18,6 +18,7 @@ type State = {
     addUser: (user: UserType) => void;
     removeUser: (id: number) => void;
     toggleRoleSelected: (id: number, roleName: string, selected: boolean, buttonCss: string) => void;
+    updateUserName: (id: number, name: string) => void;
     updateUser: (id: number, name: string) => void;
 };
 
@@ -46,6 +47,15 @@ const useStore = create<State>((set) => ({
         })
     })),
     removeUser: (id) => set((state) => ({ users: state.users.filter((user) => user.id !== id) })),
+    updateUserName: (id, name) => set((state) => ({
+        users: state.users.map((user) => {
+            if (user.id === id) {
+                return { ...user, name };
+            }
+            return user;
+        }
+        )
+    })),
     updateUser: (id, name) => set((state) => ({
         users: state.users.map((user) => {
             if (user.id === id) {
