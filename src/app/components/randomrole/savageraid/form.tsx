@@ -80,6 +80,11 @@ export default function RandomRoleSavageRaidForm() {
         ToastError("ユーザーとロール(重複なし)の数が一致しません")
     }
 
+    const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const userAndRoles = randomRole()
+    }
+
     useEffect(() => {
         // 初期化: 1人分の入力欄を作成
         addUserInput()
@@ -87,7 +92,7 @@ export default function RandomRoleSavageRaidForm() {
 
     return (
         <>
-        <form>
+        <form onSubmit={submitHandler}>
             <div className="grid grid-cols-1 gap-4">
                 {users.map((user: UserType) => (
                     <>
@@ -102,7 +107,7 @@ export default function RandomRoleSavageRaidForm() {
                 onClick={() => addUserInput()}
             >+</button>
             <button
-                type="button"
+                type="submit"
                 className="w-full border border-blue-600 mt-8 rounded p-1 text-lg  text-blue-600 hover:bg-blue-600 hover:text-white"
                 onClick={() => randomRole()}
             >Random Role!!</button>
