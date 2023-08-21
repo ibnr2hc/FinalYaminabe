@@ -1,7 +1,8 @@
 'use client'
 
-import { UserType, useStore } from "@/store/store"
+import { RoleType, UserType, useStore } from "@/store/store"
 import { ButtonCssForRole } from "@/utils/role/color"
+import { ToastError } from "@/utils/toast"
 import { useEffect } from "react"
 import { UserInput } from "./user_input"
 
@@ -10,6 +11,7 @@ export default function RandomRoleSavageRaidForm() {
     const { users, addUser, toggleRoleSelected } = useStore()
 
     const MAX_USER = 8; // 最大人数
+    const MAX_RETRY_RANDOM_ROLE = 100;  // ランダムロールの最大試行回数
 
     const addUserInput = () => {
         /* ユーザー入力欄を追加する */
@@ -29,8 +31,53 @@ export default function RandomRoleSavageRaidForm() {
         })
     }
 
+    const getSelectedRole = (roles: RoleType[]) => {
+        /* 選択されているロールを返す */
+        const selectedRoles: string[] = []
+        roles.forEach((role: RoleType) => {
+            if (role.selected) {
+                selectedRoles.push(role.name)
+            }
+        })
+        return selectedRoles
+    }
+
+    const existsUndefinedRole = (userAndRoles: {user: UserType, roleName: string}[]) => {
+        /* ロールが未定義のユーザーがいる場合はtrueを返す */
+        let isUndefinedRole = false
+        userAndRoles.forEach((userAndRole: {user: UserType, roleName: string}) => {
+            if (userAndRole.roleName == undefined) {
+                isUndefinedRole = true
+            }
+        })
+        return isUndefinedRole
+    }
+
     const randomRole = () => {
-        console.log(users[0].roles[0])
+        /* ランダムにロールを決める */
+
+        // 各ユーザーがselected=trueのロールの中からランダムで1つ選ぶ
+        for (let i = 0; i < MAX_RETRY_RANDOM_ROLE; i++) {
+            let userAndRoles: {user: UserType, roleName: string}[] = []
+            let decidedRolesName: string[] = []
+            users.forEach((user: UserType) => {
+                const selectedRolesName = getSelectedRole(user.roles)  // 選択されているロールを取得
+                const candidateRolesName = selectedRolesName.filter((roleName: string) => !decidedRolesName.includes(roleName))  // 候補のロール(決定済みのロールを除く)
+
+                // 候補のロールからランダムに1つ選ぶ
+                const randomRole = candidateRolesName[Math.floor(Math.random() * candidateRolesName.length)]
+                userAndRoles.push({user: user, roleName: randomRole})  // 選ばれたユーザーとロール
+                decidedRolesName.push(randomRole)
+            })
+
+            // ロールが未定義のユーザーがいない場合は処理を終える
+            if (!existsUndefinedRole(userAndRoles)) {
+                return userAndRoles;
+            }
+        }
+
+        // ロールが未定義のユーザーがいる場合はアラートを表示する
+        ToastError("ユーザーとロール(重複なし)の数が一致しません")
     }
 
     useEffect(() => {
