@@ -1,3 +1,4 @@
+import Navigation from '@/app/components/navigation/navigation'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { ToastContainer } from "react-toastify"
@@ -22,6 +23,11 @@ export default function RootLayout({
           {/* Title */}
           <div className="flex pb-10">
             <span className="text-3xl font-bold text-slate-700">FINAL YAMINABE</span>
+          </div>
+
+          {/* Navigation */}
+          <div className="my-10 py-8">
+            <Navigation />
           </div>
 
           {/* Contents */}
