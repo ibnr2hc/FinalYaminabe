@@ -25,7 +25,7 @@ export default function RootLayout({
           </div>
 
           {/* Contents */}
-          <div className="flex items-center justify-center shadow-md container w-full rounded bg-slate-50 py-8">
+          <div className="flex items-center justify-center shadow-md container w-full rounded bg-slate-50 py-14">
             {children}
           </div>
 
