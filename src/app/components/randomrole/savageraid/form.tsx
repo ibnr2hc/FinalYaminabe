@@ -1,6 +1,7 @@
 'use client'
 
 import { UserType, useStore } from "@/store/store"
+import { ToastError } from "@/utils/toast"
 import { UserInput } from "./user_input"
 
 
@@ -9,7 +10,10 @@ export default function RandomRoleSavageRaidForm() {
     const { users, addUser } = useStore()
 
     const addUserInput = () => {
-        // if (users.length >= 8) return
+        if (users.length >= 8) {
+            ToastError("最大8人までです")
+            return;
+        }
         addUser({id: 1, name: ""})
     }
 
