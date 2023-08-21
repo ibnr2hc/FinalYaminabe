@@ -31,7 +31,7 @@ export default function ResultPage() {
                     <tbody>
                         {userAndRoles.map((userAndRole) => {
                             return (
-                                <tr>
+                                <tr key={userAndRole.userName}>
                                     <td className='relative py-4 pl-4 pr-3 text-sm sm:pl-6'>{userAndRole.roleName}</td>
                                     <td className='relative py-4 pl-4 pr-3 text-sm sm:pl-6'>{userAndRole.roleName}</td>
                                     <td className='relative py-4 pl-4 pr-3 text-sm sm:pl-6'>{userAndRole.userName}</td>

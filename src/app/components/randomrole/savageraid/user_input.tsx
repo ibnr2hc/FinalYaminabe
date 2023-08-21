@@ -31,6 +31,7 @@ const UserInput: React.FC<UserInputType> = ({id, roles, name}) => {
             />
             {roles.map((role: RoleType) => (
                 <button
+                    key={role.name}
                     type="button"
                     className={role.buttonCss}
                     onClick={()=>toggleRole(id, role.name, role.role, !role.selected)}
