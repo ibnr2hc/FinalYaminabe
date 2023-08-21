@@ -1,10 +1,11 @@
 import create from 'zustand';
 
 export type RoleType = {
-    name: string;
-    role: string;
-    buttonCss: string;
-    selected: boolean;
+    name: string;  // ロール名
+    role: string;  // tank, healer, dpsなど
+    buttonCss: string;  // ボタンのCSS
+    selected: boolean;  // 選択状態
+    sortPriority: number;  // 並び順
 }
 
 export type UserType = {
@@ -16,6 +17,7 @@ export type UserType = {
 export type DecidedUserAndRoleType = {
     userName: string;
     roleName: string;
+    sortPriority: number;
 }
 
 type State = {

@@ -9,6 +9,13 @@ export default function ResultPage() {
 
     const { decidedUserAndRoles } = useStore()
     const userAndRoles = decidedUserAndRoles
+    // userAndRolesをsortPriorityの昇順に並び替える
+    userAndRoles.sort((a, b) => {
+        if (a.sortPriority < b.sortPriority) return -1
+        if (a.sortPriority > b.sortPriority) return 1
+        return 0
+    })
+
 
     return (
         <div className="w-full flex justfiy-center items-center flex-col px-10 py-10">

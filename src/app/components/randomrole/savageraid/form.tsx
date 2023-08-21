@@ -21,24 +21,24 @@ export default function RandomRoleSavageRaidForm() {
             id: users.length + 1,
             name: "",
             roles: [
-                {name: "MT", selected: true, buttonCss: ButtonCssForRole.tank.selected.true, role: "tank"},
-                {name: "ST", selected: true, buttonCss: ButtonCssForRole.tank.selected.true, role: "tank"},
-                {name: "H1", selected: true, buttonCss: ButtonCssForRole.healer.selected.true, role: "healer"},
-                {name: "H2", selected: true, buttonCss: ButtonCssForRole.healer.selected.true, role: "healer"},
-                {name: "D1", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "dps"},
-                {name: "D2", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "dps"},
-                {name: "D3", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "dps"},
-                {name: "D4", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "dps"},
+                {name: "MT", selected: true, buttonCss: ButtonCssForRole.tank.selected.true, role: "tank", sortPriority: 1},
+                {name: "ST", selected: true, buttonCss: ButtonCssForRole.tank.selected.true, role: "tank", sortPriority: 2},
+                {name: "H1", selected: true, buttonCss: ButtonCssForRole.healer.selected.true, role: "healer", sortPriority: 3},
+                {name: "H2", selected: true, buttonCss: ButtonCssForRole.healer.selected.true, role: "healer", sortPriority: 4},
+                {name: "D1", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "dps", sortPriority: 5},
+                {name: "D2", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "dps", sortPriority: 6},
+                {name: "D3", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "dps", sortPriority: 7},
+                {name: "D4", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "dps", sortPriority: 8},
             ],
         })
     }
 
     const getSelectedRole = (roles: RoleType[]) => {
         /* 選択されているロールを返す */
-        const selectedRoles: string[] = []
+        const selectedRoles: RoleType[] = []
         roles.forEach((role: RoleType) => {
             if (role.selected) {
-                selectedRoles.push(role.name)
+                selectedRoles.push(role)
             }
         })
         return selectedRoles
@@ -63,13 +63,19 @@ export default function RandomRoleSavageRaidForm() {
             let userAndRoles: DecidedUserAndRoleType[] = []
             let decidedRolesName: string[] = []
             users.forEach((user: UserType) => {
-                const selectedRolesName = getSelectedRole(user.roles)  // 選択されているロールを取得
-                const candidateRolesName = selectedRolesName.filter((roleName: string) => !decidedRolesName.includes(roleName))  // 候補のロール(決定済みのロールを除く)
+                const selectedRoles = getSelectedRole(user.roles)  // 選択されているロールを取得
+
+                // 選択されているロールの中から、決定済みのロールを除いたものを取得する
+                const candidateRoles = selectedRoles.filter((selectedRole: RoleType) => !decidedRolesName.includes(selectedRole.name))  // 候補のロール(決定済みのロールを除く)
 
                 // 候補のロールからランダムに1つ選ぶ
-                const randomRole = candidateRolesName[Math.floor(Math.random() * candidateRolesName.length)]
-                userAndRoles.push({userName: user.name, roleName: randomRole})  // 選ばれたユーザーとロール
-                decidedRolesName.push(randomRole)
+                const randomRole = candidateRoles[Math.floor(Math.random() * candidateRoles.length)]
+
+                // 選出されたユーザーとロールを保存し、そのユーザーとロールを決定済みとして扱う
+                // この時、選択可能なロールがない場合は後続処理でエラーを出す
+                // TODO: ロジックが汚いので修正する。候補のロールがない場合のエラーを最適化する。
+                userAndRoles.push({userName: user?.name, roleName: randomRole?.name, sortPriority: randomRole?.sortPriority})  // 選ばれたユーザーとロール
+                decidedRolesName.push(randomRole?.name)
             })
 
             // ロールが未定義のユーザーがいない場合は処理を終える
