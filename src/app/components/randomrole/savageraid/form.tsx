@@ -96,7 +96,9 @@ export default function RandomRoleSavageRaidForm() {
 
     useEffect(() => {
         // 初期化: 1人分の入力欄を作成
-        addUserInput()
+        if (users.length == 0) {
+            addUserInput()
+        }
     }, [])
 
     return (
