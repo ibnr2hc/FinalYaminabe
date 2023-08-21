@@ -17,11 +17,15 @@ Suitable for romping with friends!
 
 | System | Version |
 | ------ | ------- |
-| nodejs | v19.7.0 |
+| TypeScript | v5.1.6 |
+| Nextjs | v13.4.19 |
+| TailWindCSS | v3.3.3 |
 
 ## Run Server
 
-### for Dev
+### For Dev
 ```bash
-make devServer
+cd src
+
+yarn dev
 ```
