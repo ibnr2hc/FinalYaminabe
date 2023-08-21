@@ -1,26 +1,33 @@
 'use client'
 
-import { useEffect, useState } from "react"
-import { UserInput, UserInputType } from "./user_input"
+import { UserType, useStore } from "@/store/store"
+import { UserInput } from "./user_input"
+
 
 
 export default function RandomRoleSavageRaidForm() {
-    const [userInputs, setUserInputs] = useState<UserInputType[]>([])
+    const { users, addUser } = useStore()
 
-    useEffect(() => {
-        setUserInputs([{id: 1}, {id:2}])
-    }, [])
+    const addUserInput = () => {
+        // if (users.length >= 8) return
+        addUser({id: 1, name: ""})
+    }
 
     return (
         <>
         <form>
             <div className="grid grid-cols-1 gap-4">
-                {userInputs.map((userInput) => (
+                {users.map((user: UserType) => (
                     <>
-                    <UserInput key={userInput.id} id={userInput.id} />
+                    <UserInput key={user.id} id={user.id} />
                     </>
                 ))}
             </div>
+            <button
+                type="button"
+                className="w-full border border-green-600 mt-6 rounded p-1 text-lg font-bold text-green-600 hover:bg-green-600 hover:text-white"
+                onClick={() => addUserInput()}
+            >+</button>
         </form>
         </>
     )
