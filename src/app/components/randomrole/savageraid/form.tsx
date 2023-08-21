@@ -1,14 +1,16 @@
 'use client'
 
-import { RoleType, UserType, useStore } from "@/store/store"
+import { DecidedUserAndRoleType, RoleType, UserType, useStore } from "@/store/store"
 import { ButtonCssForRole } from "@/utils/role/color"
 import { ToastError } from "@/utils/toast"
+import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { UserInput } from "./user_input"
 
 
 export default function RandomRoleSavageRaidForm() {
-    const { users, addUser, toggleRoleSelected } = useStore()
+    const { users, addUser, setDecidedUserAndRoles } = useStore()
+    const router = useRouter()
 
     const MAX_USER = 8; // 最大人数
     const MAX_RETRY_RANDOM_ROLE = 1000;  // ランダムロールの最大試行回数
@@ -42,10 +44,10 @@ export default function RandomRoleSavageRaidForm() {
         return selectedRoles
     }
 
-    const existsUndefinedRole = (userAndRoles: {user: UserType, roleName: string}[]) => {
+    const existsUndefinedRole = (userAndRoles: {userName: string, roleName: string}[]) => {
         /* ロールが未定義のユーザーがいる場合はtrueを返す */
         let isUndefinedRole = false
-        userAndRoles.forEach((userAndRole: {user: UserType, roleName: string}) => {
+        userAndRoles.forEach((userAndRole: {userName: string, roleName: string}) => {
             if (userAndRole.roleName == undefined) {
                 isUndefinedRole = true
             }
@@ -53,12 +55,12 @@ export default function RandomRoleSavageRaidForm() {
         return isUndefinedRole
     }
 
-    const randomRole = () => {
+    const randomRole = (): DecidedUserAndRoleType[] => {
         /* ランダムにロールを決める */
 
         // 各ユーザーがselected=trueのロールの中からランダムで1つ選ぶ
         for (let i = 0; i < MAX_RETRY_RANDOM_ROLE; i++) {
-            let userAndRoles: {user: UserType, roleName: string}[] = []
+            let userAndRoles: DecidedUserAndRoleType[] = []
             let decidedRolesName: string[] = []
             users.forEach((user: UserType) => {
                 const selectedRolesName = getSelectedRole(user.roles)  // 選択されているロールを取得
@@ -66,7 +68,7 @@ export default function RandomRoleSavageRaidForm() {
 
                 // 候補のロールからランダムに1つ選ぶ
                 const randomRole = candidateRolesName[Math.floor(Math.random() * candidateRolesName.length)]
-                userAndRoles.push({user: user, roleName: randomRole})  // 選ばれたユーザーとロール
+                userAndRoles.push({userName: user.name, roleName: randomRole})  // 選ばれたユーザーとロール
                 decidedRolesName.push(randomRole)
             })
 
@@ -78,11 +80,18 @@ export default function RandomRoleSavageRaidForm() {
 
         // ロールが未定義のユーザーがいる場合はアラートを表示する
         ToastError("ユーザーとロール(重複なし)の数が一致しません")
+        throw Error("ユーザーとロール(重複なし)の数が一致しません")
     }
 
     const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+
+        // ランダムにロールを決め、storeに保存する
         const userAndRoles = randomRole()
+        setDecidedUserAndRoles(userAndRoles)
+
+        // ページを移動する
+        router.push("/result")
     }
 
     useEffect(() => {

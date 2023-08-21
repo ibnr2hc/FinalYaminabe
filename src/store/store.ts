@@ -13,17 +13,24 @@ export type UserType = {
     roles: RoleType[];
 };
 
+export type DecidedUserAndRoleType = {
+    userName: string;
+    roleName: string;
+}
+
 type State = {
-    users: UserType[];
-    addUser: (user: UserType) => void;
-    removeUser: (id: number) => void;
-    toggleRoleSelected: (id: number, roleName: string, selected: boolean, buttonCss: string) => void;
-    updateUserName: (id: number, name: string) => void;
-    updateUser: (id: number, name: string) => void;
+    users: UserType[];  // ユーザー一覧
+    addUser: (user: UserType) => void;  // ユーザーを追加する
+    toggleRoleSelected: (id: number, roleName: string, selected: boolean, buttonCss: string) => void;  // ロールの選択状態を更新する
+    updateUserName: (id: number, name: string) => void;  // ユーザー名を更新する
+    decidedUserAndRoles: DecidedUserAndRoleType[];  // 決定済みのUserとRole一覧
+    setDecidedUserAndRoles: (decidedUserAndRoles: DecidedUserAndRoleType[]) => void;  // 決定済みのUserとRoleをセットする
 };
 
 const useStore = create<State>((set) => ({
     users: [],
+    decidedUserAndRoles: [],
+    setDecidedUserAndRoles: (decidedUserAndRoles) => set({ decidedUserAndRoles }),
     addUser: (user) => set((state) => ({ users: [...state.users, user] })),
     // users.idに一致し、かつ、roles.nameに一致するもののselectedとbuttonCssを更新する
     toggleRoleSelected: (id, roleName, selected, buttonCss) => set((state) => ({
@@ -46,7 +53,6 @@ const useStore = create<State>((set) => ({
             return user;
         })
     })),
-    removeUser: (id) => set((state) => ({ users: state.users.filter((user) => user.id !== id) })),
     updateUserName: (id, name) => set((state) => ({
         users: state.users.map((user) => {
             if (user.id === id) {
@@ -56,15 +62,6 @@ const useStore = create<State>((set) => ({
         }
         )
     })),
-    updateUser: (id, name) => set((state) => ({
-        users: state.users.map((user) => {
-            if (user.id === id) {
-                return { ...user, name };
-            }
-            return user;
-        }
-        )
-    }))
 }));
 
 export {
