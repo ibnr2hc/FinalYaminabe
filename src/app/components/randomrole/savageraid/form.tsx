@@ -15,8 +15,9 @@ export default function RandomRoleSavageRaidForm() {
             ToastError("最大8人までです")
             return;
         }
+
         addUser({
-            id: 1,
+            id: users.length + 1,
             name: "",
             roles: [
                 {name: "MT", selected: true, buttonCss: ButtonCssForRole.tank.selected.true, role: "tank"},
