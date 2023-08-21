@@ -1,14 +1,14 @@
 'use client'
 
 import { UserType, useStore } from "@/store/store"
+import { ButtonCssForRole } from "@/utils/role/color"
 import { ToastError } from "@/utils/toast"
 import { useEffect } from "react"
 import { UserInput } from "./user_input"
 
 
-
 export default function RandomRoleSavageRaidForm() {
-    const { users, addUser } = useStore()
+    const { users, addUser, toggleRoleSelected } = useStore()
 
     const addUserInput = () => {
         if (users.length >= 8) {
@@ -19,20 +19,20 @@ export default function RandomRoleSavageRaidForm() {
             id: 1,
             name: "",
             roles: [
-                {name: "MT", selected: true, buttonCss: "bg-blue-600 text-white p-1 px-2 text-lg"},
-                {name: "ST", selected: true, buttonCss: "bg-blue-600 text-white p-1 px-2 text-lg"},
-                {name: "H1", selected: true, buttonCss: "bg-green-600 text-white p-1 px-2 text-lg"},
-                {name: "H2", selected: true, buttonCss: "bg-green-600 text-white p-1 px-2 text-lg"},
-                {name: "D1", selected: true, buttonCss: "bg-red-600 text-white p-1 px-2 text-lg"},
-                {name: "D2", selected: true, buttonCss: "bg-red-600 text-white p-1 px-2 text-lg"},
-                {name: "D3", selected: true, buttonCss: "bg-red-600 text-white p-1 px-2 text-lg"},
-                {name: "D4", selected: true, buttonCss: "bg-red-600 text-white p-1 px-2 text-lg"},
+                {name: "MT", selected: true, buttonCss: ButtonCssForRole.tank.selected.true, role: "tank"},
+                {name: "ST", selected: true, buttonCss: ButtonCssForRole.tank.selected.true, role: "tank"},
+                {name: "H1", selected: true, buttonCss: ButtonCssForRole.healer.selected.true, role: "healer"},
+                {name: "H2", selected: true, buttonCss: ButtonCssForRole.healer.selected.true, role: "healer"},
+                {name: "D1", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "dps"},
+                {name: "D2", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "dps"},
+                {name: "D3", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "dps"},
+                {name: "D4", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "dps"},
             ],
         })
     }
 
     const randomRole = () => {
-        console.log(users)
+        console.log(users[0].roles[0])
     }
 
     useEffect(() => {
