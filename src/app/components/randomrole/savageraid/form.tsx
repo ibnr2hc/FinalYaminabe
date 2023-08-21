@@ -11,7 +11,7 @@ export default function RandomRoleSavageRaidForm() {
     const { users, addUser, toggleRoleSelected } = useStore()
 
     const MAX_USER = 8; // 最大人数
-    const MAX_RETRY_RANDOM_ROLE = 100;  // ランダムロールの最大試行回数
+    const MAX_RETRY_RANDOM_ROLE = 1000;  // ランダムロールの最大試行回数
 
     const addUserInput = () => {
         /* ユーザー入力欄を追加する */
