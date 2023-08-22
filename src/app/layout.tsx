@@ -20,20 +20,22 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={inter.className}>
-        <main className="flex min-h-screen flex-col items-center p-24 bg-slate-200 justify-center">
+        <main className="flex min-h-screen flex-col items-center pt-8 md:p-24 bg-slate-200 justify-center">
           {/* Title */}
           <div className="flex pb-10">
             <span className="text-3xl font-bold text-slate-700">FINAL YAMINABE</span>
           </div>
 
           {/* Navigation */}
-          <div className="my-10 py-8">
+          <div className="md:my-10 md:py-8">
             <Navigation />
           </div>
 
           {/* Contents */}
-          <div className="flex items-center justify-center shadow-md container w-full rounded bg-slate-50 py-14">
-            {children}
+          <div className="px-8 w-full flex justify-center mb-12 lg:mb-0">
+            <div className="flex items-center justify-center shadow-md container w-full rounded bg-slate-50 py-8 px-6 md:py-14">
+              {children}
+            </div>
           </div>
 
           {/* Notify */}

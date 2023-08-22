@@ -81,24 +81,24 @@ export default function ResultPage() {
             {(finishedPeformance && !endShowResult) && (
                 <div className="grid grid-cols-2 gap-4">
                     <button
-                        className="border border-gray-700 text-gray-700 rounded-md shadow hover:bg-gray-700 hover:text-white px-12 py-2 mt-8"
+                        className="border border-gray-700 text-gray-700 rounded-md shadow hover:bg-gray-700 hover:text-white px-2 lg:px-12 py-2 mt-8"
                         onClick={() => router.push("/")}
                     >入力画面へ戻る</button>
                     <button
-                        className="border border-blue-700 text-blue-700 rounded-md shadow hover:bg-blue-700 hover:text-white px-12 py-2 mt-8"
+                        className="border border-blue-700 text-blue-700 rounded-md shadow hover:bg-blue-700 hover:text-white px-2 lg:px-12 py-2 mt-8"
                         onClick={showRandomUserAndRole}
                     >次へ</button>
                 </div>
             )}
             {/* 全ての結果表示が終わった & 結果表示演出が終わった場合は結果一覧表示ボタンを表示する */}
             {(finishedPeformance && endShowResult) && (
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-2 md:gap-4 mt-8">
                     <button
-                        className="border border-gray-700 text-gray-700 rounded-md shadow hover:bg-gray-700 hover:text-white px-12 py-2 mt-8"
+                        className="col-span-2 md:col-span-1 border border-gray-700 text-gray-700 rounded-md shadow hover:bg-gray-700 hover:text-white px-2 lg:px-12 py-2"
                         onClick={() => router.push("/")}
                     >入力画面へ戻る</button>
                     <button
-                        className="border border-blue-700 text-blue-700 rounded-md shadow hover:bg-blue-700 hover:text-white px-12 py-2 mt-8"
+                        className="col-span-2 md:col-span-1 border border-blue-700 text-blue-700 rounded-md shadow hover:bg-blue-700 hover:text-white px-2 lg:px-12 py-2"
                         onClick={() => router.push("/result/list")}
                     >結果一覧表示へ</button>
                 </div>
