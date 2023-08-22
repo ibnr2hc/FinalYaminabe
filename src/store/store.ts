@@ -1,5 +1,12 @@
 import create from 'zustand';
 
+export enum BattleContentEnum {  // RandomRoleの対象となるコンテンツ
+    SavageRaid = 0,    // レイド(零式)
+    NormalRaid = 1,    // レイド(ノーマル)
+    AllianceRaid = 2,  // アライアンスレイド
+    FourPlayer = 3,    // 4人コンテンツ
+}
+
 export type RoleType = {
     name: string;  // ロール名
     role: string;  // tank, healer, dpsなど
@@ -27,6 +34,8 @@ type State = {
     updateUserName: (id: number, name: string) => void;  // ユーザー名を更新する
     decidedUserAndRoles: DecidedUserAndRoleType[];  // 決定済みのUserとRole一覧
     setDecidedUserAndRoles: (decidedUserAndRoles: DecidedUserAndRoleType[]) => void;  // 決定済みのUserとRoleをセットする
+    currentBattleContent: BattleContentEnum;  // 戦闘コンテンツ
+    setCurrentBattleContent: (currentBattleContent: BattleContentEnum) => void;  // 戦闘コンテンツをセットする
 };
 
 const useStore = create<State>((set) => ({
@@ -64,6 +73,8 @@ const useStore = create<State>((set) => ({
         }
         )
     })),
+    currentBattleContent: BattleContentEnum.SavageRaid,
+    setCurrentBattleContent: (currentBattleContent) => set({ currentBattleContent })
 }));
 
 export {
