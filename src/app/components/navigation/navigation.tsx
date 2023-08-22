@@ -51,7 +51,7 @@ export default function Navigation() {
                     <div
                         key={content.name}
                         className={`${content.battleContent == currentBattleContent && "ring-4"}  flex justify-center border rounded-md bg-slate-50 shadow-md text-gray-700 font-semibold relative w-64 lg:w-30 h-20 md:h-32`}
-                        onClick={() => !content.disabled && changeBattleContent(content.battleContent)}
+                        onClick={() => content.isImplemented && !content.disabled && changeBattleContent(content.battleContent)}
                     >
                         <Image className="shadow-md rounded-md" src={content.src} objectFit="cover" layout="fill" alt="Background Normal Raid" />
                         <div className={`${content.isImplemented ? "bg-opacity-20":"bg-opacity-90"} relative rounded-md shadow-md flex justify-center items-center w-full bg-slate-700 text-white`}>{content.name}</div>
