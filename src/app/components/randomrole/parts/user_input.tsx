@@ -37,7 +37,7 @@ const UserInput: React.FC<UserInputType> = ({id, roles, name}) => {
                         key={role.name}
                         type="button"
                         className={role.buttonCss}
-                        onClick={()=>toggleRole(id, role.name, role.role, !role.selected)}
+                        onClick={()=>toggleRole(id, role.name, role.role.toLowerCase(), !role.selected)}
                     >{role.name}</button>
                 ))}
             </div>
