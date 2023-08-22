@@ -2,6 +2,7 @@
 
 import { BattleContentEnum, useStore } from '@/store/store'
 import RandomRoleAllianceRaidForm from './components/randomrole/allianceraid/form'
+import RandomRoleFourPlayerForm from './components/randomrole/fourplayer/form'
 import RandomRoleNormalRaidForm from './components/randomrole/normalraid/form'
 import RandomRoleSavageRaidForm from './components/randomrole/savageraid/form'
 
@@ -13,6 +14,7 @@ export default function Home() {
       {currentBattleContent === BattleContentEnum.SavageRaid && <RandomRoleSavageRaidForm />}
       {currentBattleContent === BattleContentEnum.NormalRaid && <RandomRoleNormalRaidForm />}
       {currentBattleContent === BattleContentEnum.AllianceRaid && <RandomRoleAllianceRaidForm />}
+      {currentBattleContent === BattleContentEnum.FourPlayer && <RandomRoleFourPlayerForm />}
     </div>
   )
 }

@@ -34,7 +34,7 @@ export default function Navigation() {
             src: "/bg-4player.jpeg",
             disabled: currentBattleContent == BattleContentEnum.FourPlayer,
             battleContent: BattleContentEnum.FourPlayer,
-            isImplemented: false,
+            isImplemented: true,
         }
     ]
 
