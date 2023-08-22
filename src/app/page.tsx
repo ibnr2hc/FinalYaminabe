@@ -8,7 +8,7 @@ export default function Home() {
   const { currentBattleContent } = useStore()
 
   return (
-    <div className="xl:w-1/2">
+    <div className="xl:w-4/5 2xl:w-1/2">
       {currentBattleContent === BattleContentEnum.SavageRaid && <RandomRoleSavageRaidForm />}
       {currentBattleContent === BattleContentEnum.NormalRaid && <RandomRoleNormalRaidForm />}
     </div>
