@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 
 export default function Navigation() {
-    const { currentBattleContent, setCurrentBattleContent } = useStore()
+    const { currentBattleContent, setCurrentBattleContent, resetUser } = useStore()
 
     const contents = [
         {
@@ -39,7 +39,9 @@ export default function Navigation() {
     ]
 
     const changeBattleContent = (battleContent: BattleContentEnum) => {
+        /* 戦闘コンテンツを変更し、ユーザー情報をリセットする */
         setCurrentBattleContent(battleContent)
+        resetUser()
     }
 
     return (
