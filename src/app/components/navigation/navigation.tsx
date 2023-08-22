@@ -18,21 +18,21 @@ export default function Navigation() {
         {
             name: "NORMAL RAID",
             src: "/bg-normal-raid.jpeg",
-            disabled: false,
+            disabled: currentBattleContent == BattleContentEnum.NormalRaid,
             battleContent: BattleContentEnum.NormalRaid,
             isImplemented: true,
         },
         {
             name: "ALLIANCE RAID",
             src: "/bg-alliance-raid.jpeg",
-            disabled: true,
+            disabled: currentBattleContent == BattleContentEnum.AllianceRaid,
             battleContent: BattleContentEnum.AllianceRaid,
             isImplemented: false,
         },
         {
             name: "4 PLAYER",
             src: "/bg-4player.jpeg",
-            disabled: true,
+            disabled: currentBattleContent == BattleContentEnum.FourPlayer,
             battleContent: BattleContentEnum.FourPlayer,
             isImplemented: false,
         }
