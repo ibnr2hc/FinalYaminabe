@@ -1,9 +1,10 @@
-import Navigation from '@/app/components/navigation/navigation'
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import { ToastContainer } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
-import './globals.css'
+import Navigation from '@/app/components/navigation/navigation';
+import { Analytics } from '@vercel/analytics/react';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -49,6 +50,7 @@ export default function RootLayout({
               theme="light"
           />
         </main>
+        <Analytics />
       </body>
     </html>
   )
