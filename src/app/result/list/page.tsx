@@ -24,7 +24,6 @@ export default function ResultPage() {
                     <thead>
                         <tr>
                             <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">ロール</th>
-                            <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">ポジション</th>
                             <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">名前</th>
                         </tr>
                     </thead>
@@ -32,7 +31,6 @@ export default function ResultPage() {
                         {userAndRoles.map((userAndRole) => {
                             return (
                                 <tr key={userAndRole.userName}>
-                                    <td className='relative py-4 pl-4 pr-3 text-sm sm:pl-6'>{userAndRole.roleName}</td>
                                     <td className='relative py-4 pl-4 pr-3 text-sm sm:pl-6'>{userAndRole.roleName}</td>
                                     <td className='relative py-4 pl-4 pr-3 text-sm sm:pl-6'>{userAndRole.userName}</td>
                                 </tr>
