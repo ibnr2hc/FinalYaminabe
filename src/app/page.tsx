@@ -1,6 +1,7 @@
 'use client'
 
 import { BattleContentEnum, useStore } from '@/store/store'
+import RandomRoleNormalRaidForm from './components/randomrole/normalraid/form'
 import RandomRoleSavageRaidForm from './components/randomrole/savageraid/form'
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
   return (
     <div className="xl:w-1/2">
       {currentBattleContent === BattleContentEnum.SavageRaid && <RandomRoleSavageRaidForm />}
+      {currentBattleContent === BattleContentEnum.NormalRaid && <RandomRoleNormalRaidForm />}
     </div>
   )
 }
