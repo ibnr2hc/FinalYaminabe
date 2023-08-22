@@ -27,7 +27,7 @@ export default function Navigation() {
             src: "/bg-alliance-raid.jpeg",
             disabled: currentBattleContent == BattleContentEnum.AllianceRaid,
             battleContent: BattleContentEnum.AllianceRaid,
-            isImplemented: false,
+            isImplemented: true,
         },
         {
             name: "4 PLAYER",
