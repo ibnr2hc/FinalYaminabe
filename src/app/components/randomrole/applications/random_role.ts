@@ -63,7 +63,6 @@ const randomRoleForNormalRaid = (users: UserType[]): DecidedUserAndRoleType[] =>
                 decidedRoleCount.HEALER += 1
             } else {  // DPSはそのままロール(Melee/Range/Caster)で振り分ける
                 role = randomRole?.name
-                console.log(role)
                 if (role == "Melee") {
                     sortPriority = 5
                 } else if (role == "Range") {
