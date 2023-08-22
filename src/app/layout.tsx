@@ -32,7 +32,7 @@ export default function RootLayout({
           </div>
 
           {/* Contents */}
-          <div className="px-8 w-full flex justify-center">
+          <div className="px-8 w-full flex justify-center mb-12 lg:mb-0">
             <div className="flex items-center justify-center shadow-md container w-full rounded bg-slate-50 py-8 px-6 md:py-14">
               {children}
             </div>
