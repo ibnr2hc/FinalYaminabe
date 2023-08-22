@@ -20,23 +20,27 @@ const UserInput: React.FC<UserInputType> = ({id, roles, name}) => {
 
     return (
         <>
-        <div>
-            <input
-                type="text"
-                className="border-slate-400 border py-1 px-2 text-lg mr-1 rounded"
-                placeholder="名前"
-                value={name}
-                onChange={(e) => {updateUserName(id, e.target.value)}}
-                required
-            />
-            {roles.map((role: RoleType) => (
-                <button
-                    key={role.name}
-                    type="button"
-                    className={role.buttonCss}
-                    onClick={()=>toggleRole(id, role.name, role.role, !role.selected)}
-                >{role.name}</button>
-            ))}
+        <div className="grid grid-cols-5 gap-1 md:gap-2 min-w-full">
+            <div className="col-span-5 lg:col-span-2 min-w-full">
+                <input
+                    type="text"
+                    className="border-slate-400 border py-1 px-2 md:text-lg md:mr-1 rounded min-w-full"
+                    placeholder="名前"
+                    value={name}
+                    onChange={(e) => {updateUserName(id, e.target.value)}}
+                    required
+                />
+            </div>
+            <div className="col-span-5 lg:col-span-3">
+                {roles.map((role: RoleType) => (
+                    <button
+                        key={role.name}
+                        type="button"
+                        className={role.buttonCss}
+                        onClick={()=>toggleRole(id, role.name, role.role, !role.selected)}
+                    >{role.name}</button>
+                ))}
+            </div>
         </div>
         </>
     )

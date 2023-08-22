@@ -121,12 +121,15 @@ export default function RandomRoleSavageRaidForm() {
     return (
         <>
         <form onSubmit={submitHandler}>
-            <div className="grid grid-cols-1 gap-4">
-                {users.map((user: UserType) => (
-                    <>
-                    <UserInput key={user.id} id={user.id} roles={user.roles} name={user.name} />
-                    </>
-                ))}
+            {/* ユーザー情報入力欄 */}
+            <div className="flex justify-center">
+                <div className="grid grid-cols-1 gap-4">
+                    {users.map((user: UserType) => (
+                        <>
+                        <UserInput key={user.id} id={user.id} roles={user.roles} name={user.name} />
+                        </>
+                    ))}
+                </div>
             </div>
 
             {/* ユーザー追加ボタン */}
@@ -166,7 +169,7 @@ export default function RandomRoleSavageRaidForm() {
                         />
                     </Switch>
                     <Switch.Label as="span" className="ml-3 text-sm">
-                        <span className="text-gray-500">演出スキップ</span>
+                        <span className="text-gray-500 text-sm">演出スキップ</span>
                     </Switch.Label>
                 </Switch.Group>
                 </div>

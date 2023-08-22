@@ -18,7 +18,7 @@ export default function ResultPage() {
 
 
     return (
-        <div className="w-full flex justfiy-center items-center flex-col px-10 py-10">
+        <div className="w-full flex justfiy-center items-center flex-col px-4 lg:px-10 py-4 lg:py-10">
             <div className="rounded shadow-md ring-1 ring-gray-300 w-full">
                 <table className="min-w-full divide-y divide-gray-300">
                     <thead>
