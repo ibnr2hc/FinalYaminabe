@@ -1,6 +1,6 @@
 'use client'
 
-import { randomRole } from "@/app/components/randomrole/applications/random_role"
+import { randomRoleForNormalRaid } from "@/app/components/randomrole/applications/random_role"
 import { useStore } from "@/store/store"
 import { ButtonCssForRole } from "@/utils/role/color"
 import { useRouter } from "next/navigation"
@@ -25,14 +25,11 @@ export default function RandomRoleNormalRaidForm() {
             id: users.length + 1,
             name: "",
             roles: [
-                {name: "MT", selected: true, buttonCss: ButtonCssForRole.tank.selected.true, role: "tank", sortPriority: 1},
-                {name: "ST", selected: true, buttonCss: ButtonCssForRole.tank.selected.true, role: "tank", sortPriority: 2},
-                {name: "H1", selected: true, buttonCss: ButtonCssForRole.healer.selected.true, role: "healer", sortPriority: 3},
-                {name: "H2", selected: true, buttonCss: ButtonCssForRole.healer.selected.true, role: "healer", sortPriority: 4},
-                {name: "D1", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "dps", sortPriority: 5},
-                {name: "D2", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "dps", sortPriority: 6},
-                {name: "D3", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "dps", sortPriority: 7},
-                {name: "D4", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "dps", sortPriority: 8},
+                {name: "Tank", selected: true, buttonCss: ButtonCssForRole.tank.selected.true, role: "TANK", sortPriority: 1},
+                {name: "Helaer", selected: true, buttonCss: ButtonCssForRole.healer.selected.true, role: "HEALER", sortPriority: 2},
+                {name: "Melee", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "DPS", sortPriority: 3},
+                {name: "Range", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "DPS", sortPriority: 3},
+                {name: "Caster", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "DPS", sortPriority: 3},
             ],
         })
     }
@@ -41,7 +38,7 @@ export default function RandomRoleNormalRaidForm() {
         e.preventDefault()
 
         // ランダムにロールを決め、storeに保存する
-        const userAndRoles = randomRole(users)
+        const userAndRoles = randomRoleForNormalRaid(users)
         setDecidedUserAndRoles(userAndRoles)
 
         // ページを移動する

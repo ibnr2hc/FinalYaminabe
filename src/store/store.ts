@@ -1,5 +1,12 @@
 import create from 'zustand';
 
+export enum BattleContentEnum {  // RandomRoleの対象となるコンテンツ
+    SavageRaid = 0,    // レイド(零式)
+    NormalRaid = 1,    // レイド(ノーマル)
+    AllianceRaid = 2,  // アライアンスレイド
+    FourPlayer = 3,    // 4人コンテンツ
+}
+
 export type RoleType = {
     name: string;  // ロール名
     role: string;  // tank, healer, dpsなど
@@ -23,10 +30,13 @@ export type DecidedUserAndRoleType = {
 type State = {
     users: UserType[];  // ユーザー一覧
     addUser: (user: UserType) => void;  // ユーザーを追加する
+    resetUser: () => void;  // ユーザーをリセットする
     toggleRoleSelected: (id: number, roleName: string, selected: boolean, buttonCss: string) => void;  // ロールの選択状態を更新する
     updateUserName: (id: number, name: string) => void;  // ユーザー名を更新する
     decidedUserAndRoles: DecidedUserAndRoleType[];  // 決定済みのUserとRole一覧
     setDecidedUserAndRoles: (decidedUserAndRoles: DecidedUserAndRoleType[]) => void;  // 決定済みのUserとRoleをセットする
+    currentBattleContent: BattleContentEnum;  // 戦闘コンテンツ
+    setCurrentBattleContent: (currentBattleContent: BattleContentEnum) => void;  // 戦闘コンテンツをセットする
 };
 
 const useStore = create<State>((set) => ({
@@ -34,6 +44,7 @@ const useStore = create<State>((set) => ({
     decidedUserAndRoles: [],
     setDecidedUserAndRoles: (decidedUserAndRoles) => set({ decidedUserAndRoles }),
     addUser: (user) => set((state) => ({ users: [...state.users, user] })),
+    resetUser: () => set({ users: [] }),
     // users.idに一致し、かつ、roles.nameに一致するもののselectedとbuttonCssを更新する
     toggleRoleSelected: (id, roleName, selected, buttonCss) => set((state) => ({
         users: state.users.map((user) => {
@@ -64,6 +75,8 @@ const useStore = create<State>((set) => ({
         }
         )
     })),
+    currentBattleContent: BattleContentEnum.SavageRaid,
+    setCurrentBattleContent: (currentBattleContent) => set({ currentBattleContent })
 }));
 
 export {
