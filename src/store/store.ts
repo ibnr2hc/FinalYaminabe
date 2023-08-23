@@ -37,6 +37,8 @@ type State = {
     setDecidedUserAndRoles: (decidedUserAndRoles: DecidedUserAndRoleType[]) => void;  // 決定済みのUserとRoleをセットする
     currentBattleContent: BattleContentEnum;  // 戦闘コンテンツ
     setCurrentBattleContent: (currentBattleContent: BattleContentEnum) => void;  // 戦闘コンテンツをセットする
+    performanceSkip: boolean;  // パフォーマンスをスキップするかどうか
+    setPerformanceSkip: (performanceSkip: boolean) => void;  // パフォーマンスをスキップするかどうかをセットする
 };
 
 const useStore = create<State>((set) => ({
@@ -76,7 +78,9 @@ const useStore = create<State>((set) => ({
         )
     })),
     currentBattleContent: BattleContentEnum.SavageRaid,
-    setCurrentBattleContent: (currentBattleContent) => set({ currentBattleContent })
+    setCurrentBattleContent: (currentBattleContent) => set({ currentBattleContent }),
+    performanceSkip: false,
+    setPerformanceSkip: (performanceSkip) => set({ performanceSkip }),
 }));
 
 export {

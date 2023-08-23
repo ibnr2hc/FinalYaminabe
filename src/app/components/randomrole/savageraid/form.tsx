@@ -4,7 +4,7 @@ import { randomRole } from "@/app/components/randomrole/applications/random_role
 import { useStore } from "@/store/store"
 import { ButtonCssForRole } from "@/utils/role/color"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import AddUserButton from "../parts/add_user"
 import SkipPerformance from "../parts/skip_performance"
 import SubmitRandomRole from "../parts/submit_random_role"
@@ -12,10 +12,8 @@ import UserInputForm from "../parts/user_input_form"
 
 
 export default function RandomRoleNormalRaidForm() {
-    const { users, addUser, setDecidedUserAndRoles } = useStore()
+    const { users, addUser, setDecidedUserAndRoles, performanceSkip, setPerformanceSkip } = useStore()
     const router = useRouter()
-
-    const [performanceSkip, setPerformanceSkip] = useState(false)
 
     const MAX_USER = 8; // 最大人数
 
