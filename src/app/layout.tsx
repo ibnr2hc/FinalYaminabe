@@ -23,7 +23,7 @@ export default function RootLayout({
         <main className="flex min-h-screen flex-col items-center pt-8 md:p-24 bg-slate-200 justify-center">
           {/* Title */}
           <div className="flex pb-10">
-            <span className="text-3xl font-bold text-slate-700">FINAL YAMINABE</span>
+            <span className="text-3xl font-bold text-slate-700">FINAL YAMINABE<span className="text-sm"> [beta]</span></span>
           </div>
 
           {/* Navigation */}
