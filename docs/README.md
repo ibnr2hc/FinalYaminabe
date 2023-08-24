@@ -23,7 +23,7 @@
 **選択範囲**
 
 - タンク(Tank) x 2
-- ヒーラー(PH/BH) x 2
+- ヒーラー(Healer) x 2
 - DPS(Melee/Range/Caster) x 4
 
 **表示の仕様**
@@ -35,6 +35,7 @@
 
 - ロール重複あり
 - Tankは選択時にはMT/STはわけないが、ロール選出の時にはMT/STが選ばれる
+- Healerは選択時にはPH/BHはわけないが、ロール選出時にはPH/BHが選ばれる
 
 ## ID
 
