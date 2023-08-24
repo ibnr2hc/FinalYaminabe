@@ -24,7 +24,7 @@ export default function RandomRoleFourPlayerForm() {
             name: "",
             roles: [
                 {name: "Tank", selected: true, buttonCss: ButtonCssForRole.tank.selected.true, role: "TANK", sortPriority: 1},
-                {name: "Helaer", selected: true, buttonCss: ButtonCssForRole.healer.selected.true, role: "HEALER", sortPriority: 2},
+                {name: "Healer", selected: true, buttonCss: ButtonCssForRole.healer.selected.true, role: "HEALER", sortPriority: 2},
                 {name: "Melee", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "DPS", sortPriority: 3},
                 {name: "Range", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "DPS", sortPriority: 3},
                 {name: "Caster", selected: true, buttonCss: ButtonCssForRole.dps.selected.true, role: "DPS", sortPriority: 3},
