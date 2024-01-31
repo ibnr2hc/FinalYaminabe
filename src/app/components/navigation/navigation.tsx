@@ -30,7 +30,7 @@ export default function Navigation() {
             isImplemented: true,
         },
         {
-            name: "4 PLAYER",
+            name: "Four PLAYER",
             src: "/bg-4player.jpeg",
             disabled: currentBattleContent == BattleContentEnum.FourPlayer,
             battleContent: BattleContentEnum.FourPlayer,
