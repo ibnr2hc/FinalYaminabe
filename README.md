@@ -11,7 +11,7 @@
 
 This is a third party tool for FinalFantasy14.
 Outputs the specified user and their role at random.
-Suitable for romping with friends!
+Suitable for romping with friends!!
 
 ## System Requirements
 
